@@ -66,6 +66,9 @@
         <basepom.check.skip-dependency>${basepom.check.skip-basic}</basepom.check.skip-dependency>
         <basepom.check.skip-duplicate-finder>${basepom.check.skip-basic}</basepom.check.skip-duplicate-finder>
         <basepom.check.skip-dependency-versions-check>${basepom.check.skip-basic}</basepom.check.skip-dependency-versions-check>
+        <!-- The modernizer has some questionable decisions about what should be checked and what not and all in all, it
+             would be better if it had finer grained control. So turn it off by default for now. -->
+        <basepom.check.skip-modernizer>true</basepom.check.skip-modernizer>
 
         <!-- extended checks -->
         <basepom.check.skip-findbugs>${basepom.check.skip-extended}</basepom.check.skip-findbugs>
@@ -85,6 +88,7 @@
         <basepom.check.fail-dependency>${basepom.check.fail-basic}</basepom.check.fail-dependency>
         <basepom.check.fail-duplicate-finder>${basepom.check.fail-basic}</basepom.check.fail-duplicate-finder>
         <basepom.check.fail-dependency-versions-check>${basepom.check.fail-basic}</basepom.check.fail-dependency-versions-check>
+        <basepom.check.fail-modernizer>${basepom.check.fail-basic}</basepom.check.fail-modernizer>
 
         <!-- extended checks -->
         <basepom.check.fail-findbugs>${basepom.check.fail-extended}</basepom.check.fail-findbugs>
@@ -176,6 +180,9 @@
 
         <!-- https://github.com/brianm/really-executable-jars-maven-plugin/releases -->
         <dep.plugin.really-executable.version>1.4.1</dep.plugin.really-executable.version>
+
+        <!-- https://github.com/andrewgaul/modernizer-maven-plugin/releases -->
+        <dep.plugin.modernizer.version>1.4.0</dep.plugin.modernizer.version>
     </properties>
 
     <prerequisites>
@@ -638,6 +645,17 @@
                         <scalaVersion>${dep.scala.version}</scalaVersion>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.gaul</groupId>
+                    <artifactId>modernizer-maven-plugin</artifactId>
+                    <version>${dep.plugin.modernizer.version}</version>
+                    <configuration>
+                        <skip>${basepom.check.skip-modernizer}</skip>
+                        <failOnViolations>${basepom.check.fail-modernizer}</failOnViolations>
+                        <javaVersion>${project.build.targetJdk}</javaVersion>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -851,6 +869,21 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.gaul</groupId>
+                <artifactId>modernizer-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>modernizer</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
