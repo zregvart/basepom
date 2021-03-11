@@ -152,7 +152,7 @@
         <dep.pmd.version>5.6.1</dep.pmd.version>
 
         <!-- https://github.com/checkstyle/checkstyle -->
-        <dep.checkstyle.version>6.19</dep.checkstyle.version>
+        <dep.checkstyle.version>8.29</dep.checkstyle.version>
 
         <!-- Scala. Leave it at 2.11 for now (https://github.com/davidB/scala-maven-plugin/issues/196) -->
         <dep.scala.version>2.11.8</dep.scala.version>
